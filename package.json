@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "npm run build -w frontend",
+    "build": "npm run build -w frontend && cp -r frontend/dist dist",
     "dev": "npm run dev -w frontend",
     "dev:backend": "npm run dev -w backend"
   },

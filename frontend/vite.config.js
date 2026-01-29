@@ -12,9 +12,8 @@ export default defineConfig({
       },
     },
   },
-  // Build to repo root /dist so Vercel finds it (outputDirectory: "dist")
   build: {
-    outDir: '../dist',
+    outDir: 'dist',
     emptyOutDir: true,
   },
 });
