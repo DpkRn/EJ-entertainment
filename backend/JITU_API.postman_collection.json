@@ -1,0 +1,185 @@
+{
+  "info": {
+    "name": "JITU Backend API",
+    "description": "Public (read-only) + Admin (full CRUD) – categories, links, preview",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080" },
+    { "key": "categoryId", "value": "" },
+    { "key": "linkId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET Health check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/health"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public - Categories",
+      "item": [
+        {
+          "name": "GET All categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/categories"
+          }
+        },
+        {
+          "name": "GET Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/categories/{{categoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Public - Links",
+      "item": [
+        {
+          "name": "GET Links by category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/links/category/{{categoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Preview",
+      "item": [
+        {
+          "name": "GET Link preview (OG meta)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/preview?url=https://example.com",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "preview"],
+              "query": [{ "key": "url", "value": "https://example.com" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Categories",
+      "item": [
+        {
+          "name": "GET All categories",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/categories"
+          }
+        },
+        {
+          "name": "GET Category by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/categories/{{categoryId}}"
+          }
+        },
+        {
+          "name": "POST Create category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"My Category\",\n  \"order\": 0\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/categories"
+          }
+        },
+        {
+          "name": "PUT Update category",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Name\",\n  \"order\": 1\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/categories/{{categoryId}}"
+          }
+        },
+        {
+          "name": "DELETE Category",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/categories/{{categoryId}}"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin - Links",
+      "item": [
+        {
+          "name": "GET Links by category",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/links/category/{{categoryId}}"
+          }
+        },
+        {
+          "name": "GET Link by ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/links/{{linkId}}"
+          }
+        },
+        {
+          "name": "POST Create link",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://example.com\",\n  \"label\": \"Example\",\n  \"category\": \"{{categoryId}}\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/links"
+          }
+        },
+        {
+          "name": "PUT Update link",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"https://updated.com\",\n  \"label\": \"Updated Label\"\n}"
+            },
+            "url": "{{baseUrl}}/api/admin/links/{{linkId}}"
+          }
+        },
+        {
+          "name": "DELETE Link",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": "{{baseUrl}}/api/admin/links/{{linkId}}"
+          }
+        }
+      ]
+    }
+  ]
+}
