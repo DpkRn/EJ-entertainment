@@ -12,8 +12,9 @@ export default defineConfig({
       },
     },
   },
-  // Align with LinkBridger: frontend builds to dist
+  // Build to repo root /dist so Vercel finds it (outputDirectory: "dist")
   build: {
-    outDir: 'dist',
+    outDir: '../dist',
+    emptyOutDir: true,
   },
 });
