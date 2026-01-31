@@ -35,8 +35,8 @@ async function ensureDb(req, res, next) {
     res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
   }
 }
-app.use('/api/visitor', ensureDb);
-app.use('/api/admin', ensureDb);
+// app.use('/api/visitor', ensureDb);
+// app.use('/api/admin', ensureDb);
 
 // Visitor API: auth, categories (read), links (read + view/like/reply), preview
 app.use('/api/visitor', visitorRoutes);
