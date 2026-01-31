@@ -16,7 +16,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 const ORIGIN = process.env.ORIGIN || 'http://localhost:5173';
 
-connectDB();
+await connectDB();
 
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.use(express.json());
