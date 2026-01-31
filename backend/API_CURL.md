@@ -110,7 +110,7 @@ curl -X GET "http://localhost:8080/api/preview?url=https://example.com"
 
 ## Admin API (full CRUD)
 
-All admin requests require the API key. The examples below use the default dev key `dev-admin-key-123` (set in `.env` as `ADMIN_API_KEY`); change it in production.
+All admin requests require the API key. The examples below use the default dev key `add-admin-key-16-char-long` (set in `.env` as `ADMIN_API_KEY`); change it in production.
 
 ### Admin – Categories
 
@@ -118,21 +118,21 @@ All admin requests require the API key. The examples below use the default dev k
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/categories \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### GET Category by ID
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/categories/{categoryId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### POST Create category
 
 ```bash
 curl -X POST http://localhost:8080/api/admin/categories \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"name":"My Category","order":0}'
 ```
@@ -143,7 +143,7 @@ Replace `{categoryId}` with category `_id`.
 
 ```bash
 curl -X PUT http://localhost:8080/api/admin/categories/{categoryId} \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"name":"Updated Name","order":1}'
 ```
@@ -152,7 +152,7 @@ curl -X PUT http://localhost:8080/api/admin/categories/{categoryId} \
 
 ```bash
 curl -X DELETE http://localhost:8080/api/admin/categories/{categoryId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 ---
@@ -163,7 +163,7 @@ curl -X DELETE http://localhost:8080/api/admin/categories/{categoryId} \
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/links/category/{categoryId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### GET Link by ID
@@ -172,7 +172,7 @@ Replace `{linkId}` with link `_id`.
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/links/{linkId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### POST Create link
@@ -181,7 +181,7 @@ Replace `{categoryId}` with a valid category `_id`.
 
 ```bash
 curl -X POST http://localhost:8080/api/admin/links \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"url":"https://example.com","label":"Example","category":"{categoryId}"}'
 ```
@@ -192,7 +192,7 @@ Replace `{linkId}` with link `_id`.
 
 ```bash
 curl -X PUT http://localhost:8080/api/admin/links/{linkId} \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"url":"https://updated.com","label":"Updated Label"}'
 ```
@@ -201,7 +201,7 @@ curl -X PUT http://localhost:8080/api/admin/links/{linkId} \
 
 ```bash
 curl -X DELETE http://localhost:8080/api/admin/links/{linkId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 ### Admin – Visitors
@@ -212,21 +212,21 @@ Visitor: `privateKey`, `name`, `role` (required); `deviceID` (array, default `[]
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/visitors \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### GET Visitor by ID
 
 ```bash
 curl -X GET http://localhost:8080/api/admin/visitors/{visitorId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 #### POST Create visitor
 
 ```bash
 curl -X POST http://localhost:8080/api/admin/visitors \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"privateKey":"my-secret-key","name":"John","role":"viewer","deviceID":[],"noOfDevice":0}'
 ```
@@ -235,7 +235,7 @@ curl -X POST http://localhost:8080/api/admin/visitors \
 
 ```bash
 curl -X PUT http://localhost:8080/api/admin/visitors/{visitorId} \
-  -H "X-Admin-Key: dev-admin-key-123" \
+  -H "X-Admin-Key: add-admin-key-16-char-long" \
   -H "Content-Type: application/json" \
   -d '{"privateKey":"...","name":"...","role":"...","deviceID":[],"noOfDevice":0}'
 ```
@@ -244,14 +244,14 @@ curl -X PUT http://localhost:8080/api/admin/visitors/{visitorId} \
 
 ```bash
 curl -X DELETE http://localhost:8080/api/admin/visitors/{visitorId} \
-  -H "X-Admin-Key: dev-admin-key-123"
+  -H "X-Admin-Key: add-admin-key-16-char-long"
 ```
 
 ---
 
 ## Postman setup
 
-1. Create an environment with **baseUrl**: `http://localhost:8080` and **adminKey**: `dev-admin-key-123` (or your `ADMIN_API_KEY` from `.env`).
+1. Create an environment with **baseUrl**: `http://localhost:8080` and **adminKey**: `add-admin-key-16-char-long` (or your `ADMIN_API_KEY` from `.env`).
 2. For **Admin** requests, add header: `X-Admin-Key` = `{{adminKey}}`.
 3. Use the paths below. For POST/PUT: Body → raw → JSON.
 
