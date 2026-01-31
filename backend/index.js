@@ -21,19 +21,21 @@ connectDB();
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.use(express.json());
 
-// Return 503 until MongoDB is connected (avoids 500 on cold start)
-app.use('/api/visitor', (req, res, next) => {
-  if (mongoose.connection.readyState !== 1) {
-    return res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
+// Wait for MongoDB on first request (serverless cold start); return 503 only if still not connected
+async function ensureDb(req, res, next) {
+  if (mongoose.connection.readyState === 1) return next();
+  try {
+    await connectDB();
+    if (mongoose.connection.readyState !== 1) {
+      return res.status(503).json({ message: 'Database unavailable. Check DATABASE_URL.' });
+    }
+    next();
+  } catch (err) {
+    res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
   }
-  next();
-});
-app.use('/api/admin', (req, res, next) => {
-  if (mongoose.connection.readyState !== 1) {
-    return res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
-  }
-  next();
-});
+}
+app.use('/api/visitor', ensureDb);
+app.use('/api/admin', ensureDb);
 
 // Visitor API: auth, categories (read), links (read + view/like/reply), preview
 app.use('/api/visitor', visitorRoutes);
