@@ -45,6 +45,18 @@ function extractMeta(html) {
   return result;
 }
 
+/** Resolve relative image URL to absolute using the page URL. */
+function resolveImageUrl(imageUrl, pageUrl) {
+  if (!imageUrl || typeof imageUrl !== 'string') return imageUrl;
+  const trimmed = imageUrl.trim();
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) return trimmed;
+  try {
+    return new URL(trimmed, pageUrl).href;
+  } catch {
+    return trimmed;
+  }
+}
+
 export async function getPreview(req, res) {
   const rawUrl = req.query.url;
   if (!isValidPreviewUrl(rawUrl)) {
@@ -80,6 +92,10 @@ export async function getPreview(req, res) {
     const html = await response.text();
     const limited = html.length > MAX_HTML_LENGTH ? html.slice(0, MAX_HTML_LENGTH) : html;
     const meta = extractMeta(limited);
+    // Resolve relative og:image to absolute so <img src> works from our domain
+    if (meta.image) {
+      meta.image = resolveImageUrl(meta.image, targetUrl);
+    }
 
     res.json(meta);
   } catch (err) {

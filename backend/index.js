@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, '.env') });
 
 import express from 'express';
 import cors from 'cors';
+import mongoose from 'mongoose';
 import connectDB from './config/db.js';
 import visitorRoutes from './routes/visitorRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
@@ -19,6 +20,20 @@ connectDB();
 
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.use(express.json());
+
+// Return 503 until MongoDB is connected (avoids 500 on cold start)
+app.use('/api/visitor', (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
+  }
+  next();
+});
+app.use('/api/admin', (req, res, next) => {
+  if (mongoose.connection.readyState !== 1) {
+    return res.status(503).json({ message: 'Database connecting. Please retry in a moment.' });
+  }
+  next();
+});
 
 // Visitor API: auth, categories (read), links (read + view/like/reply), preview
 app.use('/api/visitor', visitorRoutes);

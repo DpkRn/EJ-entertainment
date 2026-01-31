@@ -84,26 +84,56 @@ export async function getLinkById(req, res) {
   }
 }
 
+/** Normalize link body: only url, label, category; category can be id or { _id }. */
+function normalizeLinkBody(body) {
+  if (!body || typeof body !== 'object') return {};
+  const category = body.category;
+  const categoryId = category && typeof category === 'object' && category._id
+    ? category._id
+    : category;
+  return {
+    ...(body.url !== undefined && { url: body.url }),
+    ...(body.label !== undefined && { label: body.label }),
+    ...(categoryId !== undefined && categoryId !== '' && { category: categoryId }),
+  };
+}
+
 export async function createLink(req, res) {
   try {
-    const link = new Link(req.body);
+    const body = normalizeLinkBody(req.body);
+    if (!body.url || !body.category) {
+      return res.status(400).json({
+        message: 'Link requires url and category. Send { url, label?, category }.',
+      });
+    }
+    const link = new Link(body);
     await link.save();
     res.status(201).json(link);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    const msg = error.name === 'ValidationError' && error.message
+      ? error.message
+      : (error.message || 'Validation failed');
+    res.status(400).json({ message: msg });
   }
 }
 
 export async function updateLink(req, res) {
   try {
-    const link = await Link.findByIdAndUpdate(req.params.id, req.body, {
+    const body = normalizeLinkBody(req.body);
+    if (Object.keys(body).length === 0) {
+      return res.status(400).json({ message: 'Send at least one of: url, label, category.' });
+    }
+    const link = await Link.findByIdAndUpdate(req.params.id, body, {
       new: true,
       runValidators: true,
     });
     if (!link) return res.status(404).json({ message: 'Link not found' });
     res.json(link);
   } catch (error) {
-    res.status(400).json({ message: error.message });
+    const msg = error.name === 'ValidationError' && error.message
+      ? error.message
+      : (error.message || 'Validation failed');
+    res.status(400).json({ message: msg });
   }
 }
 
