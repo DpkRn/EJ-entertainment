@@ -1,10 +1,10 @@
 import { createContext, useContext, useState, useCallback, useEffect } from 'react';
 import axios from 'axios';
+import { getDeviceId } from '../utils/deviceId.js';
 
 const VisitorContext = createContext(null);
 
 const STORAGE_KEY = 'jitu-visitor-key';
-const STORAGE_DEVICE_ID = 'jitu-device-id';
 const API_BASE = '/api/visitor';
 
 function getStoredKey() {
@@ -15,21 +15,6 @@ function getStoredKey() {
   }
 }
 
-function getOrCreateDeviceId() {
-  try {
-    let id = localStorage.getItem(STORAGE_DEVICE_ID);
-    if (!id) {
-      id = typeof crypto !== 'undefined' && crypto.randomUUID
-        ? crypto.randomUUID()
-        : `dev-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
-      localStorage.setItem(STORAGE_DEVICE_ID, id);
-    }
-    return id;
-  } catch {
-    return `dev-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
-  }
-}
-
 export function VisitorProvider({ children }) {
   const [visitor, setVisitor] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -37,7 +22,6 @@ export function VisitorProvider({ children }) {
 
   const checkSession = useCallback(async () => {
     const privateKey = getStoredKey();
-    const deviceId = getOrCreateDeviceId();
     if (!privateKey) {
       setVisitor(null);
       setLoading(false);
@@ -46,6 +30,7 @@ export function VisitorProvider({ children }) {
     setLoading(true);
     setError(null);
     try {
+      const deviceId = await getDeviceId();
       const res = await axios.get(`${API_BASE}/me`, {
         headers: { 'X-Visitor-Key': privateKey, 'X-Device-ID': deviceId },
       });
@@ -66,13 +51,20 @@ export function VisitorProvider({ children }) {
     checkSession();
   }, [checkSession]);
 
+  // Remove legacy device ID from localStorage (we now use fingerprint only)
+  useEffect(() => {
+    try {
+      localStorage.removeItem('jitu-device-id');
+    } catch (_) {}
+  }, []);
+
   const login = useCallback(async (privateKey) => {
     const key = (privateKey || '').trim();
     if (!key) return { ok: false, message: 'Enter your private key.' };
-    const deviceId = getOrCreateDeviceId();
     setError(null);
     setLoading(true);
     try {
+      const deviceId = await getDeviceId();
       const res = await axios.post(`${API_BASE}/verify`, { privateKey: key, deviceId });
       const v = res.data?.visitor;
       if (v) {
@@ -112,7 +104,7 @@ export function VisitorProvider({ children }) {
     login,
     logout,
     checkSession,
-    getDeviceId: getOrCreateDeviceId,
+    getDeviceId,
     getPrivateKey: getStoredKey,
   };
 

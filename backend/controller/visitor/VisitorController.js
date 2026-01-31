@@ -1,4 +1,4 @@
-import Visitor from '../model/visitorModel.js';
+import Visitor from '../../model/visitorModel.js';
 
 /**
  * POST /api/visitor/verify
@@ -21,7 +21,8 @@ export async function verify(req, res) {
 
     const deviceIDs = Array.isArray(visitor.deviceID) ? visitor.deviceID : [];
     const limit = visitor.noOfDevice ?? 1;
-
+    console.log(deviceIDs, limit);
+    console.log(privateKey, devId);
     if (deviceIDs.includes(devId)) {
       // Already registered this device – allow
       return res.json({

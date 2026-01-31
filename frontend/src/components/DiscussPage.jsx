@@ -132,7 +132,7 @@ export default function DiscussPage({ linkId, onBack, onReplyPosted }) {
     setNewAuthor('');
     if (linkId && onReplyPosted) {
       try {
-        const res = await fetch(`/api/links/${linkId}/reply`, { method: 'POST' });
+        const res = await fetch(`/api/visitor/links/${linkId}/reply`, { method: 'POST' });
         if (res.ok) {
           const data = await res.json();
           onReplyPosted(linkId, data);
@@ -159,7 +159,7 @@ export default function DiscussPage({ linkId, onBack, onReplyPosted }) {
     });
     if (linkId && onReplyPosted) {
       try {
-        const res = await fetch(`/api/links/${linkId}/reply`, { method: 'POST' });
+        const res = await fetch(`/api/visitor/links/${linkId}/reply`, { method: 'POST' });
         if (res.ok) {
           const data = await res.json();
           onReplyPosted(linkId, data);

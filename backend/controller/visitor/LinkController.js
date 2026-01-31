@@ -1,4 +1,4 @@
-import Link from '../model/linkModel.js';
+import Link from '../../model/linkModel.js';
 
 // Public read-only and stats handlers
 

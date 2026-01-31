@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const AppContext = createContext(null);
 
-const API_BASE = '/api';
+const API_BASE = '/api/visitor';
 
 export function AppProvider({ children }) {
   const [categories, setCategories] = useState([]);

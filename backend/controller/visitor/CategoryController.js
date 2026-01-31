@@ -1,5 +1,5 @@
-import Category from '../model/categoryModel.js';
-import Link from '../model/linkModel.js';
+import Category from '../../model/categoryModel.js';
+import Link from '../../model/linkModel.js';
 
 // Public read-only category handlers
 

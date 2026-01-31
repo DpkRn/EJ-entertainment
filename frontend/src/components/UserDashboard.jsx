@@ -31,7 +31,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
         if (!entry?.isIntersecting || fetchedRef.current) return;
         fetchedRef.current = true;
         setPreviewLoading(true);
-        const url = `/api/preview?url=${encodeURIComponent(link.url)}`;
+        const url = `/api/visitor/preview?url=${encodeURIComponent(link.url)}`;
         try {
           const res = await fetch(url);
           const data = res.ok ? await res.json() : null;
@@ -54,7 +54,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
   const recordView = useCallback(() => {
     (async () => {
       try {
-        const res = await fetch(`/api/links/${id}/view`, { method: 'POST' });
+        const res = await fetch(`/api/visitor/links/${id}/view`, { method: 'POST' });
         if (res.ok) {
           const data = await res.json();
           onUpdateLink?.(id, data);
@@ -90,7 +90,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
     if (liked) return;
     setLiked(true);
     try {
-      const res = await fetch(`/api/links/${id}/like`, { method: 'POST' });
+      const res = await fetch(`/api/visitor/links/${id}/like`, { method: 'POST' });
       if (res.ok) {
         const data = await res.json();
         onUpdateLink?.(id, data);

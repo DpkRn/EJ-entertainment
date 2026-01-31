@@ -1,6 +1,6 @@
-import Category from '../model/categoryModel.js';
-import Link from '../model/linkModel.js';
-import Visitor from '../model/visitorModel.js';
+import Category from '../../model/categoryModel.js';
+import Link from '../../model/linkModel.js';
+import Visitor from '../../model/visitorModel.js';
 
 // ----- Admin Categories -----
 
