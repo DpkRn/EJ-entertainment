@@ -21,13 +21,14 @@ connectDB();
 app.use(cors({ origin: ORIGIN, credentials: true }));
 app.use(express.json());
 
-// Wait for MongoDB on first request (serverless cold start); return 503 only if still not connected
+// Wait for MongoDB on first request (serverless cold start); return 503 only if connection fails
 async function ensureDb(req, res, next) {
-  if (mongoose.connection.readyState === 1) return next();
   try {
-    await connectDB();
-    if (mongoose.connection.readyState !== 1) {
-      return res.status(503).json({ message: 'Database unavailable. Check DATABASE_URL.' });
+    const connected = await connectDB();
+    if (!connected) {
+      return res.status(503).json({
+        message: 'Database unavailable. Set DATABASE_URL in Vercel Environment Variables (Project → Settings → Environment Variables).',
+      });
     }
     next();
   } catch (err) {
