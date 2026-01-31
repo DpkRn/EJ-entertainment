@@ -132,6 +132,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
                 className="link-card__preview-img"
                 loading="lazy"
                 decoding="async"
+                referrerPolicy="no-referrer"
               />
             ) : null}
           </div>

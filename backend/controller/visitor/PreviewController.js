@@ -22,6 +22,9 @@ function extractMeta(html) {
     { key: 'description', regex: /<meta[^>]+content=["']([^"']*)["'][^>]+property=["']og:description["']/i },
     { key: 'image', regex: /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']*)["']/i },
     { key: 'image', regex: /<meta[^>]+content=["']([^"']*)["'][^>]+property=["']og:image["']/i },
+    { key: 'image', regex: /<meta[^>]+property=["']og:image:secure_url["'][^>]+content=["']([^"']*)["']/i },
+    { key: 'image', regex: /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']*)["']/i },
+    { key: 'image', regex: /<meta[^>]+content=["']([^"']*)["'][^>]+name=["']twitter:image["']/i },
   ];
 
   for (const { key, regex } of patterns) {
@@ -92,9 +95,10 @@ export async function getPreview(req, res) {
     const html = await response.text();
     const limited = html.length > MAX_HTML_LENGTH ? html.slice(0, MAX_HTML_LENGTH) : html;
     const meta = extractMeta(limited);
-    // Resolve relative og:image to absolute so <img src> works from our domain
+    // Resolve relative image URL using final URL (after redirects) so path is correct
+    const baseUrl = response.url || targetUrl;
     if (meta.image) {
-      meta.image = resolveImageUrl(meta.image, targetUrl);
+      meta.image = resolveImageUrl(meta.image, baseUrl);
     }
 
     res.json(meta);
