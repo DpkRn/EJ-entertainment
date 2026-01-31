@@ -32,10 +32,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // On Vercel, the app is imported by api/ and must not listen; Vercel runs it as serverless.
-
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
-
+}
 
 export default app;
