@@ -99,6 +99,10 @@ export async function getPreview(req, res) {
     const baseUrl = response.url || targetUrl;
     if (meta.image) {
       meta.image = resolveImageUrl(meta.image, baseUrl);
+      // Use HTTPS so images load on HTTPS sites (Vercel); avoid mixed-content block
+      if (meta.image.startsWith('http://')) {
+        meta.image = 'https://' + meta.image.slice(7);
+      }
     }
 
     res.json(meta);

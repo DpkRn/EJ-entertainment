@@ -12,6 +12,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
   const [copied, setCopied] = useState(false);
   const [preview, setPreview] = useState(null);
   const [previewLoading, setPreviewLoading] = useState(false);
+  const [previewImageError, setPreviewImageError] = useState(false);
   const [liked, setLiked] = useState(false);
   const cardRef = useRef(null);
   const fetchedRef = useRef(false);
@@ -37,6 +38,7 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
           const data = res.ok ? await res.json() : null;
           if (data?.title || data?.description || data?.image) {
             setPreview(data);
+            setPreviewImageError(false);
           }
         } catch (_) {}
         finally {
@@ -121,11 +123,11 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
         title={link.url}
         onClick={handleLinkClick}
       >
-        {(previewLoading || preview?.image) && (
+        {(previewLoading || (preview && (preview?.image || preview?.title || preview?.description))) && (
           <div className="link-card__preview">
             {previewLoading ? (
               <div className="link-card__preview-placeholder" aria-hidden />
-            ) : preview?.image ? (
+            ) : preview?.image && !previewImageError ? (
               <img
                 src={preview.image}
                 alt=""
@@ -133,8 +135,11 @@ function LinkCard({ link, onIncognito, onOpenDiscuss, onUpdateLink }) {
                 loading="lazy"
                 decoding="async"
                 referrerPolicy="no-referrer"
+                onError={() => setPreviewImageError(true)}
               />
-            ) : null}
+            ) : (
+              <div className="link-card__preview-placeholder" aria-hidden />
+            )}
           </div>
         )}
         <div className="link-card__body">
